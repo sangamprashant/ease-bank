@@ -1,0 +1,38 @@
+{
+  "name": "server-express",
+  "version": "1.0.0",
+  "description": "EaseBank is a modern mobile banking application developed as a college project using **React Native**, **MERN stack**, and **PHP** for secure KYC image uploads. It simulates core banking functionalities like user authentication, balance checking, fund transfers, and transaction tracking — all optimized for mobile devices.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sangamprashant/ease-bank.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sangamprashant/ease-bank/issues"
+  },
+  "homepage": "https://github.com/sangamprashant/ease-bank#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.15.1"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/express": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/mongoose": "^5.11.96",
+    "@types/node": "^22.15.29",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}
