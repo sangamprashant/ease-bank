@@ -4,10 +4,6 @@ import { ENV } from "../keys";
 
 const SECRET_KEY = ENV.secretKey;
 
-interface User {
-    email: string;
-}
-
 interface AuthContextType {
     user: User | null;
     token: string | null;

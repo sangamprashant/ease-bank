@@ -1,16 +1,9 @@
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, { Document, ObjectId, Schema } from "mongoose";
+import { User } from "../types/user";
 
-type userType = "admin" | "user" | "manager" | "cashier";
-
-export interface IUser extends Document {
-  name: string;
-  email: string;
-  phone: string;
-  password: string;
-  address: string;
-  createdAt: Date;
-  updatedAt: Date;
-  type: userType;
+export interface IUser extends Document, User {
+  _id: ObjectId;
+  branch: ObjectId;
 }
 
 const UserSchema = new Schema<IUser>(
@@ -25,6 +18,10 @@ const UserSchema = new Schema<IUser>(
       enum: ["admin", "user", "manager", "cashier"],
       default: "user",
       required: true,
+    },
+    branch: {
+      type: Schema.Types.ObjectId,
+      ref: "Branch",
     },
   },
   { timestamps: true }

@@ -1,3 +1,3 @@
-import { fetchLeadsByType } from "./apis/leads";
+import { apiRequest } from "./apis/apiRequest";
 
-export {fetchLeadsByType}
+export { apiRequest };

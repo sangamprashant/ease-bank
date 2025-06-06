@@ -1,10 +1,11 @@
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
+import _env from "../env";
 
-const JWT_SECRET = process.env.JWT_SECRET || 'easebank-secret-key';
+const JWT_SECRET = _env.JWT_SECRET;
 
 export const generateToken = (userId: string) => {
   return jwt.sign({ id: userId }, JWT_SECRET, {
-    expiresIn: '7d',
+    expiresIn: "7d",
   });
 };
 

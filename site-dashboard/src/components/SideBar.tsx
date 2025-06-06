@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, type ReactNode } from "react";
 import {
-    HiOutlineChartBar, HiOutlineClipboardList, HiOutlineMail,
+    HiOutlineChartBar, HiOutlineClipboardList,
     HiOutlineUsers, HiOutlineViewGrid, HiX
 } from "react-icons/hi";
-import { TbLogout2 } from "react-icons/tb";
 import { PiUserCircleGearLight } from "react-icons/pi";
+import { TbLogout2 } from "react-icons/tb";
 
+import { FaChevronDown } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useAuth } from "../providers/AuthenticationContext";
 import { useSidebar } from "../providers/SidebarContext";
@@ -13,17 +14,27 @@ import Logo from "./sidebar/Logo";
 import SideLinks from "./sidebar/SideLinks";
 import Title from "./sidebar/Title";
 import Topbar from "./sidebar/Topbar";
-import { LuLayoutTemplate } from "react-icons/lu";
-import { FaChevronDown } from "react-icons/fa";
+
+export interface SubLink {
+    title: string;
+    link: string;
+}
+
+export interface NavLink {
+    title: string;
+    link?: string;
+    icon?: ReactNode;
+    subLinks?: SubLink[];
+}
+
 
 interface SideBarProps {
     children: React.ReactNode;
 }
 
 // Sidebar Links
-const linksList = [
+export const linksList: NavLink[] = [
     { title: "Dashboard", link: "/dashboard", icon: <HiOutlineViewGrid size={22} /> },
-    { title: "Mail", link: "/mails", icon: <HiOutlineMail size={22} /> },
     { title: "Leads", link: "/leads", icon: <HiOutlineUsers size={22} /> },
     {
         title: "Bookings", icon: <HiOutlineClipboardList size={22} />, subLinks: [
@@ -34,22 +45,28 @@ const linksList = [
         ]
     },
     { title: "Analytics", link: "/analytics", icon: <HiOutlineChartBar size={22} /> },
+];
+
+export const adminLinkList: NavLink[] = [
     {
-        title: "Templates", icon: <LuLayoutTemplate size={23} />, subLinks: [
-            { title: "Create a Template", link: "/templates/create" },
-            { title: "All Templates", link: '/templates/all' },
+        title: 'Branches', icon: <HiOutlineUsers size={22} />, subLinks: [
+            { title: "All Branches", link: "/branches" },
+            { title: "Create Branch", link: "/branches/create" },
         ]
     }
 ];
 
+
 const Dashboard = ({ children }: SideBarProps) => {
     const { isOpen, closeSidebar } = useSidebar();
-    const { logout } = useAuth();
+    const { logout, user } = useAuth();
     const [activeSubMenu, setActiveSubMenu] = useState<number[]>([]);
 
     const toggleSubMenu = (index: number) => {
         activeSubMenu.includes(index) ? setActiveSubMenu(activeSubMenu.filter(i => i !== index)) : setActiveSubMenu([...activeSubMenu, index])
     };
+
+    const finallinks = user?.type === "admin" ? [...linksList, ...adminLinkList] : linksList;
 
     return (
         <div className="flex h-screen w-full">
@@ -62,7 +79,7 @@ const Dashboard = ({ children }: SideBarProps) => {
                 <div className="flex items-center justify-between p-4">
                     <Link to="/" className="flex items-center gap-2">
                         <Logo />
-                        <span className="text-xl font-semibold hidden md:block text-white">CRM</span>
+                        <span className="text-xl font-semibold hidden md:block text-white uppercase">{user?.type}</span>
                     </Link>
                     <button onClick={() => closeSidebar()} className="md:hidden text-gray-700 dark:text-gray-300">
                         <HiX size={24} />
@@ -71,10 +88,10 @@ const Dashboard = ({ children }: SideBarProps) => {
                 {/* Sidebar Navigation Links */}
                 <nav className="flex flex-col px-2 flex-1 overflow-y-auto max-h-[calc(100vh-120px)]">
                     <Title title="Menu" />
-                    {linksList.map((link, index) => (
+                    {finallinks.map((link, index) => (
                         <div key={index} className="mb-1">
                             {/* Main Link */}
-                            {link.link ? (
+                            {(link?.link && link.link) ? (
                                 <SideLinks {...link} />
                             ) : (
                                 <div className="cursor-pointer text-gray-300 flex items-center px-3 py-2 rounded-md hover:bg-gray-800 justify-between"
